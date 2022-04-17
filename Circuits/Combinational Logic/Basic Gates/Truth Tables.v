@@ -1,21 +1,26 @@
 /*
 Problem Statement: Create a combinational circuit that implements the below truth table.
-                      ---------------------------
-                      Row     	Inputs	  Outputs
-                      number	x3	x2	x1  	f
-                      ---------------------------
-                      0      	0	  0 	0   	0
-                      1	      0 	0 	1   	0
-                      2	      0	  1 	0   	1
-                      3     	0  	1 	1   	1
-                      4	      1 	0 	0   	0
-                      5     	1 	0 	1   	1
-                      6     	1 	1 	0   	0
-                      7     	1 	1 	1   	1
-                      ---------------------------
-                      
+
+                  _______________________________________________
+                  Row	     		 Inputs		  Outputs
+                  number	x3	x2	x1	  f
+                  _______________________________________________
+                  0	      0	 	0 	0	  0
+                  1	      0  	0 	1    	  0
+                  2	      0 	1 	0   	  1
+                  3	      0	 	1	1   	  1
+                  4           1 	0 	0   	  0
+                  5	      1 	0 	1   	  1
+                  6	      1	 	1	0	  0
+                  7    	      1 	1 	1   	  1
+                  _______________________________________________
+                  
 Solution:
 */
+/*-----------------------------------------------------------------------------*/
+/*                                  My solution                                */
+/*-----------------------------------------------------------------------------*/
+
 module top_module( 
     input x3,
     input x2,
@@ -37,5 +42,29 @@ module top_module(
           
         endcase
         end
+        
+endmodule
 
-endmodule             
+/*-----------------------------------------------------------------------------*/
+/*                            HDL bits solution                                */
+/*-----------------------------------------------------------------------------*/
+
+module top_module (
+	input x3,
+	input x2,
+	input x1,
+	output f
+);
+	// This truth table has four minterms. 
+	assign f = ( ~x3 & x2 & ~x1 ) | 
+				( ~x3 & x2 & x1 ) |
+				( x3 & ~x2 & x1 ) |
+				( x3 & x2 & x1 ) ;
+				
+	// It can be simplified, by boolean algebra or Karnaugh maps.
+	// assign f = (~x3 & x2) | (x3 & x1);
+	
+	// You may then notice that this is actually a 2-to-1 mux, selected by x3:
+	// assign f = x3 ? x1 : x2;
+	
+endmodule
